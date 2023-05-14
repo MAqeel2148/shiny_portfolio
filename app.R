@@ -75,12 +75,12 @@ server <- function(input, output, session) {
 ##reactive
   data <- reactive({
     req(input$n)
-    df <- storeData %>% filter(`Customer Name` %in% input$n) %>% group_by(total_year_withUs) %>% summarise(sales = sum(m_total_spent),
-                                                                                                         transaction = sum(n_transactions),
-                                                                                                         lag = sum(m_lag_of_days),
-                                                                                                         shipping = sum(m_shipping_days),
-                                                                                                         rfm = sum(RFM_value),
-                                                                                                         years = sum(total_year_withUs))
+    df <- storeData %>% filter(`Customer Name` %in% input$n) %>% group_by(total_year_withUs) %>% summarise(sales = max(m_total_spent),
+                                                                                                         transaction = max(n_transactions),
+                                                                                                         lag = max(m_lag_of_days),
+                                                                                                         shipping = max(m_shipping_days),
+                                                                                                         rfm = max(RFM_value),
+                                                                                                         years = max(total_year_withUs))
   })
   sales.cat <- df_newData %>% group_by(Category) %>% filter(duplication_exist != "TRUE") %>% summarise(value = sum(Sales)) 
   total.revenue <- sum(storeData$m_total_spent)
